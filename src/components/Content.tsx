@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { MovieCard } from "./MovieCard";
 
 interface contentProps {
@@ -12,15 +14,17 @@ interface contentProps {
   }
 }
 
-
-export function Content(props: contentProps) {
-  // Complete aqui
+function ContentComponent(props: contentProps) {
   return (
     <MovieCard
-    title={props.movie.Title} 
-    poster={props.movie.Poster}
-    runtime={props.movie.Runtime} 
-    rating={props.movie.Ratings[0].Value} 
+      title={props.movie.Title} 
+      poster={props.movie.Poster}
+      runtime={props.movie.Runtime} 
+      rating={props.movie.Ratings[0].Value} 
     />
   )
 }
+
+export const Content = memo(ContentComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.movie, nextProps.movie)
+})

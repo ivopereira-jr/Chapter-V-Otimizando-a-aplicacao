@@ -11,7 +11,6 @@ interface sidebarProps {
 }
 
 export function SideBar({genre, handleClickButton, selectedGenreId}: sidebarProps) {
-  // Complete aqui
   return (
     <Button
       id={String(genre.id)}

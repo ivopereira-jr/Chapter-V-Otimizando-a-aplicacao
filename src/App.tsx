@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+
+import { api } from './services/api';
 
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
 
-import { api } from './services/api';
-
 import './styles/global.scss';
-
 import './styles/sidebar.scss';
 import './styles/content.scss';
 
@@ -28,9 +27,7 @@ interface MovieProps {
 
 export function App() {
   const [selectedGenreId, setSelectedGenreId] = useState(1);
-
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
-
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const [selectedGenre, setSelectedGenre] = useState<GenreResponseProps>({} as GenreResponseProps);
 
@@ -50,9 +47,9 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
+  const handleClickButton = useCallback((id: number) => {
     setSelectedGenreId(id);
-  }
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -63,11 +60,11 @@ export function App() {
           {genres.map(genre => {
             return (
               <SideBar 
+                key={genre.id}
                 genre={genre}
                 handleClickButton={handleClickButton}
                 selectedGenreId={selectedGenreId}
               />
-
             )         
           })}
         </div>
@@ -81,7 +78,7 @@ export function App() {
         <main>
           <div className="movies-list">
             {movies.map(movie => {
-              return <Content movie={movie} />
+              return <Content key={movie.Title} movie={movie} />
             })}
           </div>
         </main>
@@ -89,3 +86,5 @@ export function App() {
     </div>
   )
 }
+
+// implementar virtualização na listagem dos movies 
